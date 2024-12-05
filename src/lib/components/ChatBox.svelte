@@ -5,7 +5,7 @@
 
 <div class="chatbox">
 {#each $messageStore.messages as message, i}
-    <p>{message.sender}: {message.content}</p>
+    <p>{message.sender}: {@html message.content}</p>
 {/each}
 </div>
 
