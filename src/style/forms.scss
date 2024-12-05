@@ -1,0 +1,47 @@
+@use '../var.scss';
+
+.floating-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    align-items: center;
+    padding: 2em 2.5em;
+    min-width: 25%;
+    max-width: min(85%, 500px);
+
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5em;
+        width: 100%;
+
+        div {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 0.3em;
+            width: 75%;
+
+            label {
+                color: desaturate(darken(var.$fg, 30%), 90%);
+            }
+
+            label:focus {
+                color: desaturate(darken(var.$fg, 10%), 90%);
+            }
+            
+            input {
+                padding: .4em;
+                transition: 100ms;
+            }
+
+            input:focus {
+                transition: 160ms;
+                border: 2px solid lighten(var.$content-border, 10%);
+                outline: none !important;
+                filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.1))
+            }
+        }
+    }
+}
