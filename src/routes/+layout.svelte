@@ -3,7 +3,7 @@
     import { userStore, type UserData } from "$lib/stores/userStore";
     import { isUserData, UserService } from "$lib/services/userService";
     import type { ApiResponse } from '$lib/services/requests';
-    import { initializeSocketConnection } from '$lib/services/chatService';
+    import { initializeSocketConnection, loadMessageHistory } from '$lib/services/chatService';
     import { chatStore } from '$lib/stores/chatStore';
 
     let { children } = $props();
@@ -27,6 +27,7 @@
 
         if ($userStore.loggedIn) {
             chatStore.set({connection:  initializeSocketConnection($userStore.accessToken)});
+            loadMessageHistory();
         }
     });
 </script>

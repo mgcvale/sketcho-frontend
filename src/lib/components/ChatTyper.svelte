@@ -4,8 +4,10 @@
 
     let message: string = $state("");
 
-    function sendMessage() {
-        $chatStore.connection?.sendMessage(message);
+    async function sendMessage() {
+        const connection = $chatStore.connection;
+        if (connection) 
+            await connection.sendMessage(message);
         message = "";
     }
 

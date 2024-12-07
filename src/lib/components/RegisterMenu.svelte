@@ -4,7 +4,7 @@
     import { goto } from '$app/navigation';
     import '/src/style/forms.scss';
     import type { ApiResponse } from '$lib/services/requests';
-    import { initializeSocketConnection } from '$lib/services/chatService';
+    import { initializeSocketConnection, loadMessageHistory } from '$lib/services/chatService';
     import { chatStore } from '$lib/stores/chatStore';
 
     let username: string = $state("");
@@ -23,6 +23,7 @@
             userService.loadTokenToCookie(userData.accessToken);
             userStore.set(userData);
             chatStore.set({connection: initializeSocketConnection(userData.accessToken)});
+            loadMessageHistory();
             goto('/');
         } else {
             console.log(response.status);

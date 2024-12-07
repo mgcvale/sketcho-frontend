@@ -8,7 +8,7 @@
     import { chatStore } from '$lib/stores/chatStore';
     import { error } from '@sveltejs/kit';
 
-    import { initializeSocketConnection } from '$lib/services/chatService';
+    import { initializeSocketConnection, loadMessageHistory } from '$lib/services/chatService';
 
     let { mode = $bindable() } = $props();
     let username: string = $state("");
@@ -25,7 +25,8 @@
             let userData = response.data;
             userService.loadTokenToCookie(userData.accessToken);
             userStore.set(userData);
-            chatStore.set({connection:  initializeSocketConnection(userData.accessToken)});
+            chatStore.set({connection: initializeSocketConnection(userData.accessToken)});
+            loadMessageHistory();
             goto('/');
         } else {
             console.log(response.status);

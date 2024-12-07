@@ -1,9 +1,38 @@
 
 import io from 'socket.io-client';
-import { messageStore } from '$lib/stores/messageStore';
+import { messageStore, type MessageData } from '$lib/stores/messageStore';
 import { userStore } from '$lib/stores/userStore';
 import { CONFIG } from '../../config';
 
+
+
+function isValidMessageHistory(response_json: any): response_json is  MessageData {
+    return response_json !== null && typeof response_json === 'object' && "messages" in response_json;
+}
+export async function loadMessageHistory(): Promise<void> {
+    const response = await fetch(CONFIG.getApiUrl('chat/get_history'));
+
+    if (!response.ok) {
+        console.error("Response not ok when loading chat history: ", response.status);
+        return;
+    }
+
+    try {
+        const responseJson: { messages: { username: string; message: string }[] } = await response.json();
+        console.log("Original response:", responseJson);
+
+        const transformedMessages: Message[] = responseJson.messages.map(item => ({
+            sender: item.username,
+            content: item.message,
+        }));
+
+        console.log("Transformed messages:", transformedMessages);
+
+        messageStore.set({ messages: transformedMessages });
+    } catch (error) {
+        console.error("Error parsing JSON or processing messages:", error);
+    }
+}
 export function initializeSocketConnection(accessToken: string) {
     const socket = io(CONFIG.getApiUrl('chat'), {
         transports: ['websocket'],
